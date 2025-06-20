@@ -1,0 +1,21 @@
+# playbook-configure-web.yml
+- name: Configure web server
+  hosts: web
+  become: true
+
+  tasks:
+    - name: Install Apache
+      yum:
+        name: httpd
+        state: present
+
+    - name: Start Apache
+      service:
+        name: httpd
+        state: started
+        enabled: true
+
+    - name: Copy custom HTML
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html

@@ -1,0 +1,6 @@
+# vars.yml
+key_name: demo
+instance_type: t2.micro
+region: us-west-2
+image_id: ami-0418306302097dbff  # Amazon Linux 2
+security_group: default

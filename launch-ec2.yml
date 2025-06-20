@@ -1,0 +1,28 @@
+# playbook-launch-ec2.yml
+- name: Launch EC2 Instance
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Launch EC2 instance
+      amazon.aws.ec2_instance:
+        key_name: "{{ key_name }}"
+        instance_type: "{{ instance_type }}"
+        image_id: "{{ image_id }}"
+        region: "{{ region }}"
+        wait: true
+        count: 1
+        instance_tags:
+          Name: webserver
+        vpc_subnet_id: 'subnet-05013b3bb416ce20d'     # Replace with valid subnet
+        security_group: "{{ security_group }}"
+      register: ec2_result
+
+    - name: Save instance public IP
+      copy:
+        content: "[web]\n{{ ec2_result.instances[0].public_ip }} ansible_user=ec2-user ansible_ssh_private_key_file=./ec2-key.pem\n"
+        dest: ./inventory.ini
