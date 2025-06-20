@@ -22,7 +22,20 @@
         security_group: "{{ security_group }}"
       register: ec2_result
 
-    - name: Save instance public IP
+    
+    # Optional: Debug output to inspect structure
+    - name: Show full EC2 instance details (for debug)
+      debug:
+        var: ec2_result.instances[0]
+
+    - name: Save instance public IP to inventory file
       copy:
-        content: "[web]\n{{ ec2_result.instances[0].public_ip }} ansible_user=ec2-user ansible_ssh_private_key_file=./ec2-key.pem\n"
+        content: |
+          [web]
+          {{ ec2_result.instances[0].network_interfaces[0].association.public_ip }} ansible_user=ec2-user ansible_ssh_private_key_file=./ec2-key.pem
         dest: ./inventory.ini
+
+    - name: Set permissions on inventory file
+      file:
+        path: ./inventory.ini
+        mode: '0600'
