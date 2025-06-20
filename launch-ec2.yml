@@ -16,7 +16,7 @@
         region: "{{ region }}"
         wait: true
         count: 1
-        instance_tags:
+        tags:
           Name: webserver
         vpc_subnet_id: 'subnet-05013b3bb416ce20d'     # Replace with valid subnet
         security_group: "{{ security_group }}"
