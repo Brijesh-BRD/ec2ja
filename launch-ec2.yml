@@ -39,3 +39,8 @@
       file:
         path: ./inventory.ini
         mode: '0600'
+    
+    - name: Set private key permissions (required by SSH)
+      file:
+        path: ./demo.pem
+        mode: '0400'
